@@ -1,29 +1,6 @@
 import { useState } from "react";
-import {
-  ArrowUpRight,
-  Check,
-  Copy,
-  Github,
-  Linkedin,
-  Mail,
-} from "lucide-react";
-
-const EMAIL = "kvishwakarmaofficial@gmail.com";
-
-const socials = [
-  {
-    label: "GitHub",
-    handle: "github.com/kanakvishwakarma",
-    href: "https://github.com",
-    Icon: Github,
-  },
-  {
-    label: "LinkedIn",
-    handle: "linkedin.com/in/kanak",
-    href: "https://linkedin.com",
-    Icon: Linkedin,
-  },
-];
+import { ArrowUpRight, Check, Copy, Mail } from "lucide-react";
+import { EMAIL, socials } from "./socialsData";
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);

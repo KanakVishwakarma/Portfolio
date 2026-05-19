@@ -1,10 +1,5 @@
-import { ArrowUp, Github, Linkedin, Twitter } from 'lucide-react';
-
-const socials = [
-  { label: 'GitHub',   href: 'https://github.com',  Icon: Github },
-  { label: 'LinkedIn', href: 'https://linkedin.com', Icon: Linkedin },
-  { label: 'Twitter',  href: 'https://twitter.com', Icon: Twitter },
-];
+import { ArrowUp } from 'lucide-react';
+import { socials } from './socialsData';
 
 export default function Footer() {
   const year = new Date().getFullYear();
