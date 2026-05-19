@@ -1,4 +1,4 @@
-import { skills } from './skills';
+import { skills } from './skillsData';
 
 interface SkillsProps {
   isDark: boolean;

@@ -1,5 +1,5 @@
 import { ExternalLink, Github } from 'lucide-react';
-import  {projects}  from './projects';
+import { projects } from './projectsData';
 
 interface ProjectsProps {
   isDark: boolean;
