@@ -16,10 +16,4 @@ export const socials: Social[] = [
     href: "https://github.com",
     Icon: Github,
   },
-  {
-    label: "LinkedIn",
-    handle: "linkedin.com/in/kanak",
-    href: "https://linkedin.com",
-    Icon: Linkedin,
-  },
 ];
