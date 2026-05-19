@@ -1,79 +1,112 @@
-import { useState } from 'react';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 
 interface NavbarProps {
-  isDark: boolean;
-  setIsDark: (value: boolean) => void;
+  theme: 'light' | 'dark';
+  onToggle: () => void;
 }
 
-export default function Navbar({ isDark, setIsDark }: NavbarProps) {
-  const [isOpen, setIsOpen] = useState(false);
+const links = [
+  { href: '#about',    label: 'About' },
+  { href: '#projects', label: 'Work' },
+  { href: '#skills',   label: 'Skills' },
+  { href: '#contact',  label: 'Contact' },
+];
 
-  const navLinks = [
-    { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
-    { href: '#projects', label: 'Projects' },
-    { href: '#skills', label: 'Skills' },
-    { href: '#contact', label: 'Contact' },
-  ];
+export default function Navbar({ theme, onToggle }: NavbarProps) {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <nav className={`fixed w-full top-0 z-50 transition-colors ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} shadow-md`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Portfolio
-          </div>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 backdrop-blur-xl transition-all duration-300 ${
+        scrolled
+          ? 'bg-bg/85 border-b border-line shadow-[0_1px_0_0_var(--line)]'
+          : 'bg-bg/70 border-b border-transparent'
+      }`}
+    >
+      <div className="container-x">
+        <div className="flex h-16 md:h-20 items-center justify-between">
+          {/* Wordmark */}
+          <a href="#top" className="flex items-center gap-2 font-medium tracking-tight">
+            <span className="size-7 rounded-md bg-ink text-bg flex items-center justify-center text-sm font-semibold">
+              K
+            </span>
+            <span className="hidden sm:inline">Kanak Vishwakarma</span>
+          </a>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {links.map((l) => (
               <a
-                key={link.href}
-                href={link.href}
-                className="hover:text-blue-500 transition-colors"
+                key={l.href}
+                href={l.href}
+                className="px-3 py-1.5 text-sm text-ink-soft hover:text-ink rounded-md transition-colors"
               >
-                {link.label}
+                {l.label}
               </a>
             ))}
-          </div>
+          </nav>
 
-          {/* Theme Toggle & Mobile Menu Button */}
-          <div className="flex items-center space-x-4">
+          {/* Right cluster */}
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => setIsDark(!isDark)}
-              className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
+              onClick={onToggle}
+              aria-label="Toggle theme"
+              className="size-9 rounded-md flex items-center justify-center text-ink-soft hover:text-ink hover:bg-line-soft transition-colors"
             >
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden"
+            <a
+              href="#contact"
+              className="hidden md:inline-flex btn-primary text-sm py-2 px-4"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              Hire me
+            </a>
+
+            <button
+              onClick={() => setOpen((o) => !o)}
+              aria-label="Menu"
+              className="md:hidden size-9 rounded-md flex items-center justify-center text-ink hover:bg-line-soft transition-colors"
+            >
+              {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className={`md:hidden pb-4 ${isDark ? 'bg-gray-800' : 'bg-gray-50'}`}>
-            {navLinks.map((link) => (
+        {/* Mobile drawer */}
+        {open && (
+          <div className="md:hidden pb-4 pt-1">
+            <nav className="flex flex-col">
+              {links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="py-3 border-t border-line text-base"
+                >
+                  {l.label}
+                </a>
+              ))}
               <a
-                key={link.href}
-                href={link.href}
-                className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
-                onClick={() => setIsOpen(false)}
+                href="#contact"
+                onClick={() => setOpen(false)}
+                className="btn-primary justify-center mt-3"
               >
-                {link.label}
+                Hire me
               </a>
-            ))}
+            </nav>
           </div>
         )}
       </div>
-    </nav>
+    </header>
   );
 }

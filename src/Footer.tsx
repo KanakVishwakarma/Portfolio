@@ -1,54 +1,54 @@
-interface FooterProps {
-  isDark: boolean;
-}
+import { ArrowUp, Github, Linkedin, Twitter } from 'lucide-react';
 
-export default function Footer({ isDark }: FooterProps) {
-  const currentYear = new Date().getFullYear();
+const socials = [
+  { label: 'GitHub',   href: 'https://github.com',  Icon: Github },
+  { label: 'LinkedIn', href: 'https://linkedin.com', Icon: Linkedin },
+  { label: 'Twitter',  href: 'https://twitter.com', Icon: Twitter },
+];
+
+export default function Footer() {
+  const year = new Date().getFullYear();
 
   return (
-    <footer
-      className={`transition-colors ${
-        isDark ? 'bg-gray-950 text-gray-300' : 'bg-gray-900 text-gray-300'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
-          {/* About */}
-          <div>
-            <h3 className="text-lg font-bold text-white mb-4">About</h3>
-            <p className="text-sm leading-relaxed">
-              A passionate MERN stack developer building amazing web experiences with modern technologies.
-            </p>
+    <footer className="border-t border-line">
+      <div className="container-x py-16 md:py-20">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
+          <div className="flex items-center gap-3">
+            <span className="size-8 rounded-md bg-ink text-bg flex items-center justify-center text-sm font-semibold">
+              K
+            </span>
+            <p className="font-medium">Kanak Vishwakarma</p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-bold text-white mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#home" className="hover:text-blue-400 transition-colors">Home</a></li>
-              <li><a href="#about" className="hover:text-blue-400 transition-colors">About</a></li>
-              <li><a href="#projects" className="hover:text-blue-400 transition-colors">Projects</a></li>
-              <li><a href="#contact" className="hover:text-blue-400 transition-colors">Contact</a></li>
-            </ul>
+          <div className="flex items-center gap-2">
+            {socials.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="size-9 rounded-md flex items-center justify-center text-ink-soft hover:text-ink hover:bg-line-soft transition-colors"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
           </div>
 
-          {/* Social */}
-          <div>
-            <h3 className="text-lg font-bold text-white mb-4">Follow</h3>
-            <ul className="space-y-2 text-sm">
-              <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">GitHub</a></li>
-              <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">LinkedIn</a></li>
-              <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">Twitter</a></li>
-            </ul>
-          </div>
+          <a
+            href="#top"
+            className="inline-flex items-center gap-2 text-sm text-ink-soft hover:text-ink transition-colors"
+          >
+            Back to top
+            <span className="size-8 rounded-md border border-line flex items-center justify-center">
+              <ArrowUp size={14} />
+            </span>
+          </a>
         </div>
 
-        {/* Divider */}
-        <div className={`border-t ${isDark ? 'border-gray-800' : 'border-gray-700'} pt-8`}>
-          <p className="text-center text-sm">
-            © {currentYear} Your Name. All rights reserved. Built with React + Tailwind CSS.
-          </p>
-        </div>
+        <p className="mt-16 text-xs text-muted">
+          © {year} Kanak Vishwakarma · Built with React & Tailwind.
+        </p>
       </div>
     </footer>
   );

@@ -1,174 +1,124 @@
-import { Mail, Linkedin, Github, Twitter } from 'lucide-react';
-import { useState } from 'react';
+import { useState } from "react";
+import {
+  ArrowUpRight,
+  Check,
+  Copy,
+  Github,
+  Linkedin,
+  Mail,
+} from "lucide-react";
 
-interface ContactProps {
-  isDark: boolean;
-}
+const EMAIL = "kvishwakarmaofficial@gmail.com";
 
-export default function Contact({ isDark }: ContactProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+const socials = [
+  {
+    label: "GitHub",
+    handle: "github.com/kanakvishwakarma",
+    href: "https://github.com",
+    Icon: Github,
+  },
+  {
+    label: "LinkedIn",
+    handle: "linkedin.com/in/kanak",
+    href: "https://linkedin.com",
+    Icon: Linkedin,
+  },
+];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+export default function Contact() {
+  const [copied, setCopied] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Thank you for reaching out! I will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
   };
 
   return (
-    <section
-      id="contact"
-      className={`py-20 px-4 transition-colors ${
-        isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
-      }`}
-    >
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">Get In Touch</h2>
-        <p className={`text-center mb-12 text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-          Have a project in mind or want to collaborate? Let's talk!
+    <section id="contact" className="section border-t border-line">
+      <div className="container-x">
+        <div className="heading-rule mb-6">
+          <span className="eyebrow">Contact</span>
+        </div>
+
+        <h2 className="text-3xl md:text-5xl font-medium tracking-[-0.02em] leading-[1.15] max-w-3xl">
+          Have a project in mind?{" "}
+          <span className="serif-italic text-accent">Let's talk</span>.
+        </h2>
+
+        <p className="mt-6 text-lg text-ink-soft max-w-xl leading-relaxed">
+          I'm currently open to freelance projects, contract work, and full-time
+          roles. The fastest way to reach me is email — I usually reply within a
+          day.
         </p>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-semibold mb-2">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    isDark
-                      ? 'bg-gray-800 border-gray-700 text-white'
-                      : 'bg-gray-50 border-gray-300 text-gray-900'
-                  }`}
-                  placeholder="Your name"
-                />
-              </div>
+        {/* Email — primary contact */}
+        <div className="mt-20 md:mt-24 flex flex-wrap items-baseline gap-x-6 gap-y-3">
+          <a
+            href={`mailto:${EMAIL}`}
+            className="text-2xl md:text-4xl font-medium tracking-tight hover:text-accent transition-colors"
+          >
+            {EMAIL}
+          </a>
+          <button
+            onClick={copyEmail}
+            className="font-mono text-xs text-muted hover:text-ink inline-flex items-center gap-1.5 transition-colors"
+            aria-label="Copy email"
+          >
+            {copied ? (
+              <>
+                <Check size={13} className="text-emerald-500" /> Copied
+              </>
+            ) : (
+              <>
+                <Copy size={13} /> Copy
+              </>
+            )}
+          </button>
+        </div>
 
-              <div>
-                <label className="block text-sm font-semibold mb-2">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    isDark
-                      ? 'bg-gray-800 border-gray-700 text-white'
-                      : 'bg-gray-50 border-gray-300 text-gray-900'
-                  }`}
-                  placeholder="your.email@example.com"
-                />
-              </div>
+        {/* Socials */}
+        <div className="mt-24 md:mt-32">
+          <p className="eyebrow mb-8">Or find me on</p>
 
-              <div>
-                <label className="block text-sm font-semibold mb-2">Message</label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-                    isDark
-                      ? 'bg-gray-800 border-gray-700 text-white'
-                      : 'bg-gray-50 border-gray-300 text-gray-900'
-                  }`}
-                  placeholder="Your message here..."
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-6">Connect With Me</h3>
-              <div className="space-y-4">
+          <ul className="grid sm:grid-cols-3 gap-4 md:gap-6">
+            {socials.map(({ label, handle, href, Icon }) => (
+              <li key={label}>
                 <a
-                  href="mailto:your.email@example.com"
-                  className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <Mail className="text-blue-500" size={24} />
-                  <div>
-                    <p className="font-semibold">Email</p>
-                    <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                      your.email@example.com
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://linkedin.com"
+                  href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="card group p-6 md:p-7 flex items-center gap-4"
                 >
-                  <Linkedin className="text-blue-500" size={24} />
-                  <div>
-                    <p className="font-semibold">LinkedIn</p>
-                    <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                      linkedin.com/in/yourprofile
+                  <span className="size-10 rounded-lg bg-line-soft text-ink flex items-center justify-center shrink-0">
+                    <Icon size={18} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium">{label}</p>
+                    <p className="text-xs text-muted truncate mt-0.5">
+                      {handle}
                     </p>
                   </div>
+                  <ArrowUpRight
+                    size={16}
+                    className="text-muted shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink"
+                  />
                 </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <Github className="text-blue-500" size={24} />
-                  <div>
-                    <p className="font-semibold">GitHub</p>
-                    <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                      github.com/yourprofile
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <Twitter className="text-blue-500" size={24} />
-                  <div>
-                    <p className="font-semibold">Twitter</p>
-                    <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
-                      @yourhandle
-                    </p>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
+        {/* Direct mailto fallback */}
+        <div className="mt-20 md:mt-24">
+          <a href={`mailto:${EMAIL}`} className="btn-primary inline-flex">
+            <Mail size={16} />
+            Send me an email
+          </a>
         </div>
       </div>
     </section>
